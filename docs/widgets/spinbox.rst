@@ -1,0 +1,126 @@
+Spinbox
+=======
+
+A **spinbox** is an entry with up/down arrows for stepping through a range of
+values. ``Spinbox`` is the native ``ttk.Spinbox``, styled with ``bootstyle=``.
+This page covers stepping over a numeric range, stepping through a list, reacting
+to the arrows, then the ``bootstyle`` color and states.
+
+.. image:: /_static/examples/spinbox-hero-light.png
+   :class: tb-screenshot-light
+   :width: 205px
+   :alt: A numeric spinbox and a list spinbox with up/down arrows — light theme
+
+.. image:: /_static/examples/spinbox-hero-dark.png
+   :class: tb-screenshot-dark
+   :width: 205px
+   :alt: A numeric spinbox and a list spinbox with up/down arrows — dark theme
+
+Usage
+-----
+
+Give a numeric range with ``from_``, ``to``, and ``increment`` (the step per
+arrow click), and bind the value to a variable:
+
+.. code-block:: python
+
+   import ttkbootstrap as ttk
+
+   app = ttk.App()
+
+   quantity = ttk.IntVar(value=1)
+   ttk.Spinbox(app, from_=1, to=10, increment=1, textvariable=quantity).pack(padx=10, pady=10)
+
+   ttk.Button(app, text="Order", command=lambda: print(quantity.get()), bootstyle="primary").pack()
+
+   app.mainloop()
+
+``from_`` has a trailing underscore because ``from`` is a Python keyword; ``to``
+and ``increment`` do not. Read the value with the bound variable's ``.get()`` or
+the spinbox's own ``.get()`` (which returns a string).
+
+When the range steps by a fraction, set ``format=`` so the field shows a clean
+number instead of float noise like ``0.30000000000000004``:
+
+.. code-block:: python
+
+   ttk.Spinbox(app, from_=0, to=1, increment=0.1, format="%.2f")
+
+Stepping through a list
+-----------------------
+
+Pass ``values=`` instead of a range to step through a fixed list. Add
+``wrap=True`` so it cycles from the last item back to the first:
+
+.. code-block:: python
+
+   ttk.Spinbox(app, values=["Small", "Medium", "Large"], wrap=True)
+
+``values=`` overrides ``from_`` / ``to`` / ``increment`` — use one mode or the
+other, not both. ``wrap=True`` works for a numeric range too, cycling ``to`` back
+around to ``from_``.
+
+Reacting to the arrows
+----------------------
+
+``command=`` runs each time the user clicks an arrow — handy to recompute
+something as the value steps:
+
+.. code-block:: python
+
+   def on_step():
+       print("now", quantity.get())
+
+   ttk.Spinbox(app, from_=0, to=100, increment=5, textvariable=quantity, command=on_step)
+
+``command`` fires only for the arrows, not for typing; to react to typed edits too,
+trace the variable (see :doc:`Variables & reactivity
+</user-guide/foundations/state-and-variables>`). The arrows also respond to the
+``<Up>`` / ``<Down>`` keys, and the widget emits ``<<Increment>>`` /
+``<<Decrement>>`` virtual events on a step — a binding point distinct from
+``command``. Spinbox has ``.set(value)`` to set the field directly but, unlike
+:doc:`Combobox <combobox>`, no ``current()`` method — select by value with
+``.set()`` or the variable.
+
+Color
+-----
+
+Like the other inputs, ``bootstyle`` sets the spinbox's **focus color**: the
+border is a neutral hairline at rest and shows the accent color when the field has
+focus (and ``danger`` when a validation rule fails). The stepper arrows keep a
+constant color across styles.
+
+.. code-block:: python
+
+   ttk.Spinbox(app, from_=0, to=10, bootstyle="info")
+
+States
+------
+
+**Disabled** greys the whole widget out; **readonly** lets the arrows still step
+the value but blocks typing:
+
+.. code-block:: python
+
+   spin.state(["disabled"])            # greyed out, no interaction
+   spin.state(["readonly"])            # arrows work, not typeable
+   spin.state(["!disabled", "!readonly"])   # back to normal
+
+With validation attached, a failed check also puts the field in the **invalid**
+state — what the ``danger`` border maps to. Validation sets and clears it for you;
+read it with ``spin.instate(["invalid"])``.
+
+Reference
+---------
+
+``Spinbox`` is the native ``ttk.Spinbox``; ttkbootstrap adds only the ``bootstyle``
+keyword.
+
+- :doc:`Spinbox API reference </reference/api/spinbox>` — every option and method.
+- :ref:`Spinbox styling options <spinbox-styling>` — restyle it yourself, with the
+  :doc:`Custom styles </user-guide/feature-guides/custom-styles>` guide.
+
+.. seealso::
+
+   - :doc:`Entry <entry>` — a plain single-line text field.
+   - :doc:`Combobox <combobox>` — a dropdown of choices.

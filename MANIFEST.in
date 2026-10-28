@@ -1,0 +1,7 @@
+include LICENSE
+include README.md
+
+graft src/ttkbootstrap
+graft src/ttkcreator
+
+global-exclude *.py[cod] __pycache__/* .DS_Store

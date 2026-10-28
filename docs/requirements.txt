@@ -1,0 +1,8 @@
+sphinx>=7.2
+pydata-sphinx-theme
+sphinx-design
+sphinx-copybutton
+sphinx-autobuild
+sphinx-notfound-page
+myst-parser
+Pillow>=10,<14

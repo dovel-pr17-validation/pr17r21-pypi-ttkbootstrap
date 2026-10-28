@@ -1,0 +1,34 @@
+venv
+.idea
+build
+dist
+*.egg-info
+*.mp4
+*_build
+*_static
+.vscode
+__pycache__
+testing_notes.txt
+docsenv
+errors
+development/archived
+development/issues
+testenv
+pyvenv
+identifier.sqlite
+tests/dialog.py
+tests/themes.json
+/tests/temp/
+/tests/issues/
+/.pypirc
+publish.bat
+/issues/
+site
+tmp/
+
+# Sphinx docs
+docs/_build/
+# autosummary-generated API stubs are regenerated on every build
+docs/reference/api/generated/
+# the broad `*_static` rule above would ignore the committed docs static assets
+!docs/_static/
